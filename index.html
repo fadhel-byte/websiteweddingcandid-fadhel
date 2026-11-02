@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5efe5">
+<title>Momenku — Simpan momen bersama</title>
+<style>
+:root{--paper:#f5efe5;--ink:#28271f;--muted:#777366;--accent:#c66b4e;--line:#ded5c8;--card:#fffaf3}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:22px clamp(18px,5vw,64px);border-bottom:1px solid var(--line)}
+.logo{font-family:Georgia,serif;font-size:25px;letter-spacing:-1px}.logo span{color:var(--accent)}
+.badge{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;border:1px solid var(--line);border-radius:99px;padding:8px 12px}
+main{max-width:1100px;margin:auto;padding:40px 20px 70px}
+.hero{text-align:center;padding:30px 0 38px}.eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:bold}
+h1{font:normal clamp(38px,7vw,76px)/.98 Georgia,serif;letter-spacing:-2px;margin:18px auto;max-width:800px}
+.subtitle{max-width:510px;margin:0 auto;color:var(--muted);font-size:15px;line-height:1.7}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 12px 35px #4b39200a}
+.panel h2{font:normal 25px Georgia,serif;margin:0 0 8px}.desc{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 18px}
+.camera-wrap{position:relative;overflow:hidden;border-radius:16px;background:#292820;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:#f9f2e8}
+video{width:100%;height:100%;object-fit:cover;display:none}#placeholder{text-align:center;padding:25px}#placeholder .camicon{font-size:42px;margin-bottom:8px}
+.controls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}.btn{border:0;border-radius:999px;padding:13px 17px;font-weight:700;font-size:13px;cursor:pointer}
+.primary{background:var(--accent);color:white}.secondary{background:#eee5d9;color:var(--ink)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.counter{display:flex;justify-content:space-between;align-items:center;margin-top:15px;color:var(--muted);font-size:12px}.counter strong{color:var(--ink)}
+.notice{font-size:12px;color:var(--muted);line-height:1.6;margin-top:13px}
+.field{display:block;font-size:12px;font-weight:bold;margin:15px 0 7px}.input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#fffdf9;font-size:14px;color:var(--ink)}
+.event-card{padding:18px;border-radius:15px;background:#eee5d9;margin-bottom:18px}.event-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}.event-name{font:normal 25px Georgia,serif;margin-top:8px;overflow-wrap:anywhere}
+.qrrow{display:flex;align-items:center;gap:16px}.qrbox{width:112px;height:112px;flex:none;background:white;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line);overflow:hidden}.qrbox img{width:100%;height:100%;object-fit:contain}.qrbox small{text-align:center;padding:8px;font-size:10px;color:var(--muted)}
+.qrtext{font-size:12px;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}.qrtext strong{display:block;color:var(--ink);margin-bottom:5px}
+.gallery-head{display:flex;justify-content:space-between;align-items:center;margin:27px 0 14px}.gallery-head h2{font:normal 27px Georgia,serif;margin:0}.gallery-head span{font-size:12px;color:var(--muted)}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.photo{position:relative;aspect-ratio:1;overflow:hidden;border-radius:12px;background:#e8dfd2}.photo img{width:100%;height:100%;object-fit:cover;display:block}.photo button{position:absolute;right:6px;top:6px;border:0;border-radius:99px;background:#fffdf0dd;padding:6px;cursor:pointer}
+.empty{grid-column:1/-1;text-align:center;padding:30px;border:1px dashed #cfc3b3;border-radius:14px;color:var(--muted);font-size:13px}
+footer{text-align:center;padding:25px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#28271f;color:white;padding:12px 18px;border-radius:99px;font-size:13px;display:none;max-width:90%;z-index:10}
+@media(max-width:760px){main{padding-top:22px}.layout{grid-template-columns:1fr}.hero{padding-top:20px}.gallery{grid-template-columns:repeat(3,1fr)}header{padding:17px 20px}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header><div class="logo">momen<span>ku</span>.</div><div class="badge">Digital guest camera</div></header>
+<main>
+<section class="hero"><div class="eyebrow">Every angle tells a story</div><h1>Momen kecil,<br><em>kenangan selamanya.</em></h1><p class="subtitle">Ambil foto dari sudut pandangmu. Kumpulkan cerita hari istimewa dalam satu galeri yang penuh kenangan.</p></section>
+<div class="layout">
+<section class="panel">
+<h2>Kamera tamu</h2><p class="desc">Izinkan akses kamera, arahkan, lalu abadikan momenmu.</p>
+<div class="camera-wrap"><video id="video" autoplay playsinline></video><div id="placeholder"><div class="camicon">▣</div><strong>Kamera siap menangkap momen</strong><p style="font-size:12px;opacity:.7">Tekan “Aktifkan kamera” untuk mulai</p></div></div>
+<div class="controls"><button id="start" class="btn secondary">Aktifkan kamera</button><button id="capture" class="btn primary" disabled>● Ambil foto</button><button id="switch" class="btn secondary" disabled>Balik kamera</button></div>
+<div class="counter"><span>Jatah foto di perangkat ini</span><strong><span id="count">0</span> / 10</strong></div>
+<p class="notice">Demo: foto disimpan di browser perangkat ini saja. Agar semua tamu bisa mengirim foto ke galeri bersama, website perlu dihubungkan ke penyimpanan online.</p>
+</section>
+<aside class="panel">
+<h2>Detail acara</h2><p class="desc">Ubah nama acara untuk menyesuaikan halamanmu.</p>
+<label class="field" for="eventName">Nama acara</label><input class="input" id="eventName" value="The Wedding of Alya &amp; Raka" maxlength="90">
+<label class="field" for="eventDate">Tanggal acara</label><input class="input" id="eventDate" type="date">
+<label class="field" for="limit">Batas foto per perangkat</label><select class="input" id="limit"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select>
+<div class="event-card" style="margin-top:20px"><div class="event-label">You are invited to capture</div><div class="event-name" id="eventPreview">The Wedding of Alya &amp; Raka</div><div id="datePreview" style="font-size:12px;color:var(--muted);margin-top:8px">A day to remember ♡</div></div>
+<div class="qrrow"><div class="qrbox" id="qr"><small>QR akan muncul setelah website dipublikasikan</small></div><div class="qrtext"><strong>Bagikan ke para tamu</strong>Setelah website diunggah ke hosting, QR code bisa diarahkan ke tautan website acara ini. QR pada demo belum menjadi tautan acara publik.</div></div>
+<div class="controls"><button id="downloadAll" class="btn secondary">Unduh semua foto</button><button id="reset" class="btn secondary">Reset demo</button></div>
+</aside>
+</div>
+<div class="gallery-head"><h2>Galeri kenangan</h2><span id="galleryCount">0 foto</span></div>
+<div class="gallery" id="gallery"><div class="empty">Belum ada foto. Foto yang kamu ambil akan muncul di sini.</div></div>
+</main>
+<footer>Dibuat dengan ♡ untuk momen yang berarti · Momenku demo</footer>
+<div class="toast" id="toast"></div>
+<script>
+const video=document.getElementById('video'), placeholder=document.getElementById('placeholder');
+const startBtn=document.getElementById('start'), captureBtn=document.getElementById('capture'), switchBtn=document.getElementById('switch');
+const gallery=document.getElementById('gallery'), countEl=document.getElementById('count'), limitEl=document.getElementById('limit');
+let stream=null, facing='environment', photos=[], maxPhotos=10;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display='none',2800)}
+function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null}
+async function startCamera(){try{stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1600},height:{ideal:1200}},audio:false});video.srcObject=stream;video.style.display='block';placeholder.style.display='none';captureBtn.disabled=false;switchBtn.disabled=false;startBtn.textContent='Matikan kamera'}catch(e){toast('Kamera tidak bisa dibuka. Izinkan akses kamera dan gunakan HTTPS.');}}
+startBtn.addEventListener('click',()=>{if(stream){stopCamera();video.style.display='none';placeholder.style.display='block';captureBtn.disabled=true;switchBtn.disabled=true;startBtn.textContent='Aktifkan kamera'}else startCamera()});
+switchBtn.addEventListener('click',()=>{facing=facing==='environment'?'user':'environment';startCamera()});
+captureBtn.addEventListener('click',()=>{maxPhotos=Number(limitEl.value);if(photos.length>=maxPhotos){toast('Jatah foto sudah habis.');return}if(!video.videoWidth){toast('Tunggu kamera siap dulu.');return}const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0);const data=c.toDataURL('image/jpeg',.86);photos.push({data,created:new Date().toISOString()});render();toast('Momen berhasil diabadikan!')});
+function render(){countEl.textContent=photos.length;document.getElementById('galleryCount').textContent=photos.length+' foto';gallery.innerHTML='';if(!photos.length){gallery.innerHTML='<div class="empty">Belum ada foto. Foto yang kamu ambil akan muncul di sini.</div>';return}photos.forEach((p,i)=>{const d=document.createElement('div');d.className='photo';const im=document.createElement('img');im.src=p.data;im.alt='Foto kenangan '+(i+1);const b=document.createElement('button');b.textContent='×';b.title='Hapus foto';b.onclick=()=>{photos.splice(i,1);render()};d.append(im,b);gallery.append(d)})}
+document.getElementById('eventName').addEventListener('input',e=>document.getElementById('eventPreview').textContent=e.target.value||'Nama acara');
+document.getElementById('eventDate').addEventListener('change',e=>{const d=e.target.value;document.getElementById('datePreview').textContent=d?new Date(d+'T12:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'A day to remember ♡'});
+limitEl.addEventListener('change',()=>{maxPhotos=Number(limitEl.value);toast('Batas foto diubah menjadi '+maxPhotos+' foto.')});
+document.getElementById('downloadAll').addEventListener('click',()=>{if(!photos.length){toast('Belum ada foto untuk diunduh.');return}photos.forEach((p,i)=>{const a=document.createElement('a');a.href=p.data;a.download='momenku-'+String(i+1).padStart(2,'0')+'.jpg';document.body.appendChild(a);a.click();a.remove()});toast('Unduhan foto dimulai.')});
+document.getElementById('reset').addEventListener('click',()=>{if(confirm('Hapus semua foto demo dari halaman ini?')){photos=[];render();toast('Demo direset.')}});
+window.addEventListener('beforeunload',stopCamera);
+if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){startBtn.disabled=true;startBtn.textContent='Kamera tidak didukung';toast('Browser ini tidak mendukung akses kamera.')}
+</script>
+</body></html>
